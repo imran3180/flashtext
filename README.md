@@ -4,8 +4,7 @@
 
 This module can be used to replace keywords in sentences or extract keywords from sentences. It is based on the [FlashText algorithm](https://arxiv.org/abs/1711.00046)
 
-More about Flashtext algorithm can be found here.
-
+#### More about Flashtext algorithm.
 The original paper published on [FlashText algorithm](https://arxiv.org/abs/1711.00046>)
 
 The article published on [Medium freeCodeCamp](https://medium.freecodecamp.org/regex-was-taking-5-days-flashtext-does-it-in-15-minutes-55f04411025f)
@@ -28,6 +27,13 @@ Contribute
 
 - Issue Tracker: https://github.com/imran3180/flashtext/issues
 - Source Code: https://github.com/imran3180/flashtext/issues
+
+Implementation in other languages
+---------------------------------
+
+- Python: https://github.com/vi3k6i5/flashtext (Core Project)
+- JavaScript: https://github.com/drenther/flashtext.js
+- Golang: https://github.com/sundy-li/flashtext
 
 
 ## License
