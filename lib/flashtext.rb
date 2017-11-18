@@ -1,5 +1,4 @@
 require "flashtext/version"
-
+require "flashtext/keyword_processor"
 module Flashtext
-  # Your code goes here...
 end
