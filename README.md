@@ -40,7 +40,7 @@ new_sentence
 #=> "I love New York and NCR region."
 ```
 
-#### Replace keywords
+#### Case Sensitive example
 ```ruby
 keyword_processor = Flashtext::KeywordProcessor.new(case_sensitive = true)
 keyword_processor.add_keyword('Big Apple', 'New York')
