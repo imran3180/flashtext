@@ -130,5 +130,116 @@ module Flashtext
       end
       keywords_extracted
     end
+
+    def replace_keywords sentence
+      if sentence.nil? || sentence.empty?
+        return sentence
+      end
+      new_sentence = ""
+      original_sentence = sentence
+      sentence = sentence.downcase if not case_sensitive
+      current_word = ""
+      current_hash = keyword_trie_hash
+      current_white_space = ""
+      sequence_end_pos = 0
+      idx = 0
+      sentence_len = sentence.length
+
+      while idx < sentence_len
+        char = sentence[idx]
+        current_word += original_sentence[idx]
+
+        if not word_boundaries.member?(char)
+          current_white_space = char
+          if current_hash.has_key?(_keyword) or current_hash.has_key?(char)
+            # update longest sequence found
+            sequence_found = nil
+            longest_sequence_found = nil
+            is_longer_seq_found = false
+            if current_hash.has_key?(_keyword)
+              sequence_found = current_hash[_keyword]
+              longest_sequence_found = current_hash[_keyword]
+              sequence_end_pos = idx
+            end
+
+            # re look for longest_sequence from this position
+            if current_hash.has_key?(char)
+              current_hash_continued = current_hash[char]
+              current_word_continued = current_word
+              idy = idx + 1
+              while idy < sentence_len
+                inner_char = sentence[idy]
+                current_word_continued += original_sentence[idy]
+                if !word_boundaries.member?(inner_char) and current_hash_continued.has_key?(_keyword)
+                  # Update longest sequence found
+                  current_white_space = inner_char
+                  longest_sequence_found = current_hash_continued[_keyword]
+                  sequence_end_pos = idy
+                  is_longer_seq_found = true
+                end
+                if current_hash_continued.has_key?(inner_char)
+                  current_hash_continued = current_hash_continued[inner_char]
+                else
+                  break
+                end
+                idy += 1
+              end
+              if idy == sentence_len # end of sentence reached.
+                if current_hash_continued.member?(_keyword)
+                  # update longest sequence found
+                  current_white_space = ""
+                  longest_sequence_found = current_hash_continued[_keyword]
+                  sequence_end_pos = idy
+                  is_longer_seq_found = true
+                end
+              end
+              if is_longer_seq_found
+                idx = sequence_end_pos
+                current_word = current_word_continued
+              end
+            end
+            current_hash = keyword_trie_hash
+            if longest_sequence_found
+              new_sentence += (longest_sequence_found + current_white_space)
+              current_word = ''
+              current_white_space = ''
+            else
+              new_sentence += current_word
+              current_word = ''
+              current_white_space = ''
+            end
+          else
+            # we reset current_hash
+            current_hash = keyword_trie_hash
+            new_sentence += current_word
+            current_word = ''
+            current_white_space = ''
+          end
+        elsif current_hash.has_key?(char)
+          # we can continue from this char
+          current_hash = current_hash[char]
+        else
+          # reset current_hash
+          current_hash = keyword_trie_hash
+          idy = idx + 1
+          while idy < sentence_len
+            char = sentence[idy]
+            current_word += original_sentence[idy]
+            break if not word_boundaries.member?(char)
+            idy += 1
+          end
+          idx = idy
+          new_sentence += current_word
+          current_word = ""
+          current_white_space = ""
+        end
+        if idx + 1 >= sentence_len && current_hash.has_key?(_keyword)
+          sequence_found = current_hash[_keyword]
+          new_sentence += sequence_found
+        end
+        idx = idx + 1 # loop increment
+      end
+      return new_sentence
+    end
   end
 end
