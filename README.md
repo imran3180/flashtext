@@ -21,6 +21,41 @@ API doc
 Documentation can be found at [FlashText Read the Docs](http://www.rubydoc.info/gems/flashtext/)
 
 ## Usage
+#### Extract keywords
+```ruby
+keyword_processor = Flashtext::KeywordProcessor.new
+# keyword_processor.add_keyword(<unclean name>, <standardised name>)
+keyword_processor.add_keyword('Big Apple', 'New York')
+keyword_processor.add_keyword('Bay Area')
+keywords_found = keyword_processor.extract_keywords('I love Big Apple and Bay Area.')
+keywords_found
+#=> ["New York", "Bay Area"]
+```
+
+#### Replace keywords
+```ruby
+keyword_processor.add_keyword('New Delhi', 'NCR region')
+new_sentence = keyword_processor.replace_keywords('I love Big Apple and new delhi.')
+new_sentence
+#=> "I love New York and NCR region."
+```
+
+#### Replace keywords
+```ruby
+keyword_processor = Flashtext::KeywordProcessor.new(case_sensitive = true)
+keyword_processor.add_keyword('Big Apple', 'New York')
+keyword_processor.add_keyword('Bay Area')
+keywords_found = keyword_processor.extract_keywords('I love big Apple and Bay Area.')
+keywords_found
+#=> ['Bay Area']
+```
+
+
+Test
+----------
+```ruby
+rspec spec
+```
 
 Contribute
 ----------
