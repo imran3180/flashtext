@@ -21,6 +21,13 @@ API doc
 Documentation can be found at [FlashText Read the Docs](http://www.rubydoc.info/gems/flashtext/)
 
 ## Usage
+
+If you are using irb console
+
+```ruby
+require 'elasticsearch-index-transfer'
+```
+
 #### Extract keywords
 ```ruby
 keyword_processor = Flashtext::KeywordProcessor.new
