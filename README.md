@@ -25,7 +25,7 @@ Documentation can be found at [FlashText Read the Docs](http://www.rubydoc.info/
 If you are using irb console
 
 ```ruby
-require 'elasticsearch-index-transfer'
+require 'flashtext'
 ```
 
 #### Extract keywords
